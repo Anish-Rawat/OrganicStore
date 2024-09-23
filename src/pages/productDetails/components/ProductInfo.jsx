@@ -13,24 +13,28 @@ import {
 import Button2 from "../../../components/Button2";
 
 const ProductInfo = ({ fetchProductInfo = {} }) => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [quantityView, setQuantityView] = useState(false);
   const [isBtnVisible, setIsBtnVisible] = useState(true);
   const { id, productName, about, price } = fetchProductInfo;
 
   const dispatch = useDispatch();
   const addedItemsList = useSelector((state) => state.cartQuantity.addedItems);
-  const selectedItem = addedItemsList.find((item) => item.itemInfo.id === id);
+  console.log("idddddd",id);
+  console.log("added items list ",addedItemsList);
+  const selectedItem = addedItemsList.find((item) => item?.itemInfo?.id === id);
 
   const selectedItemQuantity = selectedItem?.itemQuantity || 0;
-
+  console.log(selectedItem);
+  console.log("wwwwww",selectedItemQuantity);
+  
   useEffect(() => {
     if (selectedItemQuantity > 0) {
       setQuantity(selectedItemQuantity);
       setQuantityView(true);
       setIsBtnVisible(false);
     } else {
-      setQuantity(0);
+      setQuantity(1);
       setQuantityView(false);
       setIsBtnVisible(true);
     }
@@ -42,7 +46,7 @@ const ProductInfo = ({ fetchProductInfo = {} }) => {
       setIsBtnVisible(true);
       setQuantityView(false);
     }
-  }, [quantity, id, dispatch]);
+  }, [quantity, id]);
 
   const updateQuantity = (newQuantity) => {
     const diff = newQuantity - quantity;
@@ -59,7 +63,7 @@ const ProductInfo = ({ fetchProductInfo = {} }) => {
         itemQuantity: selectedItemQuantityDiff,
       })
     );
-
+    dispatch
     setQuantity(newQuantity);
   };
 
