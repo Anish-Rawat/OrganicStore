@@ -15,6 +15,7 @@ const CustomPWA = () => {
       setIsVisible(true);
     };
 
+    console.log("1234567890",window);
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);

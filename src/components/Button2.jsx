@@ -8,7 +8,6 @@ import {
 } from "../features/cartQuantity/cartQuantitySlice";
 
 const Button2 = ({
-  btnIcon,
   text,
   price,
   quantity,
@@ -26,19 +25,21 @@ const Button2 = ({
       dispatch(addItemAsync(1));
       dispatch(totalAmountAsync(cost));
       dispatch(
-        addedItemsAsync({ itemInfo: fetchProductInfo, itemQuantity: quantity })
+        addedItemsAsync({ itemInfo: fetchProductInfo, itemQuantity: 1 })
       );
       setQuantityView(true);
       setQuantity(1);
+      setIsBtnVisible(false);
     }
-    setIsBtnVisible(false);
   };
 
   return (
     <button
       type="button"
       onClick={handleOnClick}
-      className="w-36 bg-[#6a9739] text-lg text-white rounded-md hover:bg-[#89b15f] p-3 z-50 h-[50px]"
+      className={`${
+        text === "ADD TO CART" ? "w-36" : "w-full"
+      } bg-[#6a9739] text-lg text-white rounded-md hover:bg-[#89b15f] p-3 h-[50px]`}
     >
       <span>{text}</span>
     </button>

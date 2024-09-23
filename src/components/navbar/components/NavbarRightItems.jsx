@@ -23,7 +23,9 @@ const NavbarRightItems = ({ setIsCartOpen }) => {
 
   return (
     <span className="p-10 flex flex-row items-center">
-      <CustomPWA />
+      <div className="relative mr-5">
+        <CustomPWA />
+      </div>
       {navbarRightItems.map((item) => (
         <NavLink to={`${item.item.toLowerCase()}`} key={item.id}>
           <span className="p-3 text-lg hover:text-[#8bc34a]">{item.item}</span>

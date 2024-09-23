@@ -48,7 +48,7 @@ const Cart = ({ setIsCartOpen }) => {
         </div>
 
         <div className="bottom-0 flex items-center pb-2 px-2">
-          <Button2 />
+          <Button2 text={"CONTINUE SHOPPING"}/>
         </div>
       </div>
     </div>

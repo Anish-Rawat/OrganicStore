@@ -13,57 +13,36 @@ import {
 import Button2 from "../../../components/Button2";
 
 const ProductInfo = ({ fetchProductInfo = {} }) => {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [quantityView, setQuantityView] = useState(false);
   const [isBtnVisible, setIsBtnVisible] = useState(true);
   const { id, productName, about, price } = fetchProductInfo;
 
-  console.log(quantity);
   const dispatch = useDispatch();
   const addedItemsList = useSelector((state) => state.cartQuantity.addedItems);
-  const selectedItem = addedItemsList.find((item) => {
-    return item.itemInfo.id === id;
-  });
+  const selectedItem = addedItemsList.find((item) => item.itemInfo.id === id);
 
-  const selectedItemQuantity = selectedItem?.itemQuantity;
-  console.log(selectedItemQuantity);
+  const selectedItemQuantity = selectedItem?.itemQuantity || 0;
 
   useEffect(() => {
-    if (quantity < 1) {
-      dispatch(removeItemAsync(id)).then(() => {
-        setIsBtnVisible(true); 
-        setQuantityView(false); 
-      });
-    } else if (quantity >1) {
-      setIsBtnVisible(false);
+    if (selectedItemQuantity > 0) {
+      setQuantity(selectedItemQuantity);
       setQuantityView(true);
+      setIsBtnVisible(false);
+    } else {
+      setQuantity(0);
+      setQuantityView(false);
+      setIsBtnVisible(true);
+    }
+  }, [selectedItemQuantity]);
+
+  useEffect(() => {
+    if (quantity === 0) {
+      dispatch(removeItemAsync(id)); 
+      setIsBtnVisible(true);
+      setQuantityView(false);
     }
   }, [quantity, id, dispatch]);
-
-  useEffect(()=>{
-
-    if(selectedItemQuantity){
-      setQuantity(selectedItemQuantity);
-    }
-    else{
-      setQuantity(0)
-    }
-  },[selectedItemQuantity])
-
-  useEffect(() => {
-    if (selectedItemQuantity) {
-      console.log(selectedItemQuantity);
-      setQuantity(selectedItemQuantity);
-    } else {
-      console.log(selectedItemQuantity);
-      setQuantity(1);
-    }
-    setIsBtnVisible(true);
-    const exitingItem = addedItemsList.find((item) => {
-      return item.itemInfo.id === id;
-    });
-    exitingItem ? setQuantityView(true) : setQuantityView(false);
-  }, [id]);
 
   const updateQuantity = (newQuantity) => {
     const diff = newQuantity - quantity;
@@ -118,7 +97,6 @@ const ProductInfo = ({ fetchProductInfo = {} }) => {
               -
             </button>
             <input
-            min={1}
               type="text"
               value={quantity}
               onChange={handleOnChange}
@@ -133,9 +111,9 @@ const ProductInfo = ({ fetchProductInfo = {} }) => {
             </button>
           </div>
         )}
-        {isBtnVisible === true && (
+        {isBtnVisible && (
           <Button2
-            text={"Add TO CART"}
+            text={"ADD TO CART"}
             price={price}
             quantityView={quantityView}
             quantity={quantity}
